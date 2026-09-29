@@ -1,0 +1,144 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Project C Gemini Spike",
+    "description": "Phase 1 simulated handoff note classification.",
+    "version": "1.1"
+  },
+  "host": "generativelanguage.googleapis.com",
+  "basePath": "/v1beta",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "gemini_key": {
+      "type": "apiKey",
+      "name": "x-goog-api-key",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "gemini_key": []
+    }
+  ],
+  "paths": {
+    "/models/gemini-3.5-flash-lite:generateContent": {
+      "post": {
+        "summary": "Classify handoff notes",
+        "operationId": "ClassifyNotes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GenerateRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Gemini response",
+            "schema": {
+              "$ref": "#/definitions/GenerateResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GenerateRequest": {
+      "type": "object",
+      "required": [
+        "contents",
+        "generationConfig"
+      ],
+      "properties": {
+        "systemInstruction": {
+          "type": "object",
+          "properties": {
+            "parts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "contents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "parts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "generationConfig": {
+          "type": "object",
+          "properties": {
+            "responseMimeType": {
+              "type": "string"
+            },
+            "responseSchema": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    },
+    "GenerateResponse": {
+      "type": "object",
+      "properties": {
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "object",
+                "properties": {
+                  "parts": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "text": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

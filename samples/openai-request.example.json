@@ -1,0 +1,37 @@
+{
+  "model": "gpt-4o-mini",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Read only the handoff note. Suggest one issue category from the fixed list and write a factual summary of one or two sentences. Treat the category as a provisional label, not a verified root cause. Do not infer facts absent from the note. If the note is insufficient, use OTHER_UNCLEAR. Return only the requested JSON object."
+    },
+    {
+      "role": "user",
+      "content": "The customer has not returned the requested field mapping confirmation. The implementation team is holding the final setup handoff until that confirmation arrives."
+    }
+  ],
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "exception_classification",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "issue_category": {
+            "type": "string",
+            "enum": [
+              "CUSTOMER_INPUT_PENDING",
+              "INTERNAL_HANDOFF",
+              "TECHNICAL_BLOCKER",
+              "OTHER_UNCLEAR"
+            ]
+          },
+          "summary": {"type": "string"}
+        },
+        "required": ["issue_category", "summary"],
+        "additionalProperties": false
+      }
+    }
+  }
+}
